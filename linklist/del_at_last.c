@@ -1,63 +1,68 @@
-#include <stdio.h> 
-#include <stdlib.h> 
- 
- 
+#include <stdio.h>
+#include <stdlib.h>
+
 struct node {
-  int data ; 
-  struct node *link ; 
-} ; 
-  
-void add_at_end(struct node *head  , int data ) {
+    int data;
+    struct node *link;
+};
 
-  struct node *curr  = (struct node*)malloc(sizeof(struct node)) ;  
-  curr -> data  = data  ; 
-  curr -> link  = NULL ; 
-  struct node *ptr  = head;  
-  while (ptr  -> link != NULL ) {
-    ptr  = ptr  -> link ; 
+struct node *head = NULL;   // global head: every function can change it
 
-  } 
-  ptr -> link  = curr ; 
-
-}
-struct node* del_last(struct node *head ) {
- 
-  if (head == NULL) return 0; 
-  if (head  -> link  == NULL ) {
-    free(head) ; 
-    head  = NULL ;
-  } 
-  else 
+void add_at_end(int data)
 {
-    struct node *temp  = head ;
-    struct node *temp2  = head ; 
-    while (temp -> link != NULL ) {
+    struct node *curr = (struct node*)malloc(sizeof(struct node));
+    curr->data = data;
+    curr->link = NULL;
 
-      temp2  = temp   ; 
-      temp   = temp  -> link ;     
-
-    } 
-    temp2  -> link   = NULL ; 
-    free(temp) ; 
-    temp  = NULL ; 
-} 
-  return head ; 
-
+    if (head == NULL)
+    {
+        head = curr;
+        return;
+    }
+    struct node *ptr = head;
+    while (ptr->link != NULL)
+        ptr = ptr->link;
+    ptr->link = curr;
 }
-int main() {
-  
-  struct node *head  =(struct node*)malloc(sizeof(struct node)) ; 
-  head  -> data  =  10 ;  
-  head  -> link  = NULL ; 
-  add_at_end(head  , 20) ; 
-  add_at_end(head  , 30) ; 
-  head  = del_last(head) ; 
- 
-  struct node *ptr  =  head ; 
-  while (ptr != NULL ) {
-    printf( " %d " ,  ptr  -> data ) ; 
-    ptr  = ptr  -> link ; 
-  }
-  printf("\n") ; 
-  return  0 ;
+
+void del_last()
+{
+    if (head == NULL)
+        return;
+
+    if (head->link == NULL)
+    {
+        free(head);
+        head = NULL;
+    }
+    else
+    {
+        struct node *temp = head;
+        struct node *temp2 = head;
+        while (temp->link != NULL)
+        {
+            temp2 = temp;
+            temp = temp->link;
+        }
+        temp2->link = NULL;
+        free(temp);
+    }
+}
+
+int main()
+{
+    add_at_end(10);
+    add_at_end(20);
+    add_at_end(30);
+
+    del_last();
+
+    struct node *ptr = head;
+    while (ptr != NULL)
+    {
+        printf(" %d ", ptr->data);
+        ptr = ptr->link;
+    }
+    printf("\n");
+    return 0;
 }
